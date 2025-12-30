@@ -1,0 +1,32 @@
+<nav class="fixed top-0 left-0 right-0 z-50">
+    <div class="bg-white/70 backdrop-blur-md border border-green-100/50 px-6 py-3 shadow-sm flex items-center justify-between">
+        
+        <div class="flex items-center space-x-8">
+            <div class="flex items-center space-x-2 mr-4">
+                <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">G</span>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <a class="text-slate-600 font-medium hover:text-green-600 transition-colors duration-300 relative group">
+                    Batches
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a class="text-slate-600 font-medium hover:text-green-600 transition-colors duration-300 relative group">
+                    Candidate
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </div>
+        </div>
+
+        <div class="flex items-center">
+            <button class="flex items-center space-x-2 px-5 py-2.5 bg-white border border-red-100 text-red-500 font-semibold rounded-xl hover:bg-red-50 hover:border-red-200 transition-all duration-300 shadow-sm active:scale-95" (click)="logout()">
+                <span>Logout</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</nav>
