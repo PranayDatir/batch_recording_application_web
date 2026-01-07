@@ -1,0 +1,67 @@
+import { Component, Inject, inject, OnInit, Optional } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { faTimes, faPlusCircle, faTag, faAlignLeft, faCalendarAlt, faCalendarCheck, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { IBatch } from '../../core/models/Batch';
+import { BatchService } from '../../core/services/batches';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
+@Component({
+  selector: 'app-addeditbatch',
+  standalone: true,
+  imports: [FontAwesomeModule, ReactiveFormsModule],
+  templateUrl: './addeditbatch.html',
+  styleUrl: './addeditbatch.css',
+})
+export class Addeditbatch implements OnInit {
+  private readonly fb = inject(FormBuilder);
+  batchService = inject(BatchService);
+
+  constructor(@Optional() public dialogRef: MatDialogRef<Addeditbatch>, @Inject(MAT_DIALOG_DATA) public dialogData: IBatch) { }
+
+  faTimes = faTimes
+  faPlusCircle = faPlusCircle
+  faTag = faTag
+  faAlignLeft = faAlignLeft
+  faCalendarAlt = faCalendarAlt
+  faCalendarCheck = faCalendarCheck
+  faCheckCircle = faCheckCircle
+  faPlus = faPlus
+
+  batchForm = this.fb.group({
+    batchId: [0],
+    batchName: ['', [Validators.required]],
+    startDate: ['', [Validators.required]],
+    endDate: ['', [Validators.required]],
+    isActive: [false],
+    description: ['', [Validators.required]],
+    createdAt: [new Date()],
+    updatedAt: [new Date()],
+  });
+
+  isEdit: boolean = false;
+  ngOnInit(): void {
+    if (this.dialogData && this.dialogData.batchId !== 0) {
+      this.isEdit = true;
+
+      this.batchService.getBatchById(this.dialogData.batchId, (data: IBatch) => {
+      this.batchForm.patchValue({
+        ...data,
+        startDate: this.formatDate(data.startDate),
+        endDate: this.formatDate(data.endDate),
+      });
+    });
+    }
+  }
+
+  formatDate(date: string | Date): string {
+    return new Date(date).toLocaleDateString('sv-SE', { timeZone: 'Asia/Kolkata' });
+  }
+
+  submitForm() {
+    if (this.batchForm.valid) {
+      this.batchService.addEditBatch(this.batchForm.value as IBatch, () => this.dialogRef?.close(true));
+    }
+  }
+}

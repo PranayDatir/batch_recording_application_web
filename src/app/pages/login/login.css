@@ -1,5 +1,5 @@
  /* Soft Floating Animation */
- @keyframes float {
+ /* @keyframes float {
      0% {
          transform: translateY(0px);
      }
@@ -15,13 +15,13 @@
 
  .float-anim {
      animation: float 6s ease-in-out infinite;
- }
+ } */
 
  /* Soft Mesh Background */
- .bg-light-mesh {
+ /* .bg-light-mesh {
      background-color: #8697a8;
      background-image:
-         radial-gradient(at 0% 0%, rgb(0, 0, 0) 0, transparent 50%),
-         radial-gradient(at 50% 0%, rgb(109, 129, 132) 0, transparent 50%),
-         radial-gradient(at 100% 0%, rgb(0, 0, 0) 0, transparent 50%);
- }
+         radial-gradient(at 0% 0%, rgb(252, 131, 131) 0, transparent 50%),
+         radial-gradient(at 50% 0%, rgb(255, 255, 255) 0, transparent 50%),
+         radial-gradient(at 100% 0%, rgb(253, 0, 0) 0, transparent 50%);
+ } */

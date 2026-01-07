@@ -1,10 +1,10 @@
 export interface IBatch {
   batchId: number;
   batchName: string;
-  description?: string | null;
+  description: string;
   startDate: string;       // ISO date-time string
-  endDate?: string | null;
+  endDate: string;
   isActive: boolean;
-  createdAt: string;       // ISO date-time string
-  updatedAt?: string | null;
+  createdAt: Date;       // ISO date-time string
+  updatedAt?: Date;
 }

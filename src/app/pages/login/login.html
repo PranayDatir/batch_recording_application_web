@@ -1,6 +1,7 @@
 <div class="bg-light-mesh min-h-screen flex items-center justify-center p-6 font-sans">
     <div class="animate__animated animate__fadeIn float-anim w-full max-w-md">
-        <div class="bg-white/80 backdrop-blur-xl p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(148,163,184,0.15)] border border-white">
+        <div
+            class="bg-white/80 backdrop-blur-xl p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(148,163,184,0.15)] border border-white">
             <div class="text-center mb-8">
                 <div
                     class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-tr from-cyan-100 to-blue-100 rounded-2xl mb-4 shadow-sm">
@@ -14,27 +15,26 @@
                 <p class="text-slate-500 mt-2 font-medium">Please sign in to continue</p>
             </div>
 
-            <form class="space-y-5">
+            <form class="space-y-5" #loginForm="ngForm" (ngSubmit)="login()">
                 <div class="group">
                     <label class="block text-sm font-semibold text-slate-600 mb-1.5 ml-1">Email Address</label>
                     <input type="email"
                         class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 focus:bg-white focus:ring-4 focus:ring-cyan-100 focus:border-cyan-400 outline-none transition-all duration-300 placeholder:text-slate-400"
-                        placeholder="hello@example.com" name="email" [(ngModel)]="loginObj.email">
+                        placeholder="hello@example.com" name="email" required [(ngModel)]="loginObj.email">
                 </div>
 
                 <div class="group">
                     <div class="flex justify-between mb-1.5 ml-1">
                         <label class="text-sm font-semibold text-slate-600">Password</label>
                     </div>
-                    <input type="password"
+                    <input type="password" required
                         class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 focus:bg-white focus:ring-4 focus:ring-cyan-100 focus:border-cyan-400 outline-none transition-all duration-300 placeholder:text-slate-400"
                         placeholder="••••••••" name="password" [(ngModel)]="loginObj.password">
                 </div>
 
-                <button type="submit"
-                    class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-cyan-200 transform transition-all duration-300 hover:scale-[1.01] active:scale-95" (click)="login()">
-                    Sign In
-                </button>
+                <app-loadingbutton label="Login" [loading]="isSubmitting" [disabled]="loginForm.invalid!" type="submit">
+                </app-loadingbutton>
+
             </form>
         </div>
     </div>
