@@ -77,7 +77,7 @@ export class Batches implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.batcheService.getBatches();
+      result ? this.batcheService.getBatches() : null;;
     });
   }
 }
