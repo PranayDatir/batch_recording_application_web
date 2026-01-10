@@ -7,5 +7,5 @@ export interface ICandidate {
   role?: string | null;
   isActive: boolean;
   createdAt: string;      // ISO date-time format
-  updatedAt?: string | null;
+  updatedAt?: string;
 }
