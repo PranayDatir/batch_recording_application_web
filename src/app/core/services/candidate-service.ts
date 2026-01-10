@@ -10,7 +10,7 @@ import { ApiRoutes } from '../constants/ApiRoutes';
 export class CandidateService {
   http = inject(Http);
 
-  candidatesList = signal<ICandidate[]>([])
+  candidatesList = signal<ICandidate[]>([]);
 
   getCandidates() {
     const http = this.http.get<IApiResponse<ICandidate[]>>(ApiRoutes.CANDIDATES).subscribe({
