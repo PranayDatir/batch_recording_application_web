@@ -13,4 +13,5 @@ export interface IBatchEnrollmentResponse {
   fullName: string;
   mobileNumber: string;
   batchName: string;
+  batchId: number;
 }

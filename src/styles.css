@@ -81,3 +81,11 @@ body {
 .icon-btn:hover {
     background: #f1f5f9;
 }
+
+/* .video-dialog-panel .mat-dialog-container {
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  border-radius: 2px; 
+} */

@@ -5,6 +5,10 @@ import { Batches } from './pages/batches/batches';
 import { Candidate } from './pages/candidate/candidate';
 import { authGuard } from './core/guards/auth-guard';
 import { BatchEnrollments } from './pages/batch-enrollments/batch-enrollments';
+import { Sessions } from './pages/sessions/sessions';
+import { Batchlist } from './pages/batchlist/batchlist';
+import { Recordings } from './pages/recordings/recordings';
+import { Dashboard } from './pages/dashboard/dashboard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,10 +18,19 @@ export const routes: Routes = [
         component: Layout,
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+            { path: 'dashboard',component:Dashboard ,pathMatch: 'full' },
             { path: 'batches', component: Batches, pathMatch: 'full' },
             { path: 'candidate', component: Candidate, pathMatch: 'full' },
             { path: 'batchEnrollments', component: BatchEnrollments, pathMatch: 'full' },
-            { path: 'batchSessions', component: BatchEnrollments, pathMatch: 'full' },
+            {
+                path: 'batchSessions', component: Sessions, children: [
+                    {path: '', redirectTo: 'batchList', pathMatch:'full'},
+                    { path: 'batchList', component: Batchlist },
+                    { path: 'recording/:batchId', component: Recordings },
+                ]
+            },
+            { path: 'batchSessions/:batchId', component: Sessions },
+
         ],
         canActivate: [authGuard]
     }

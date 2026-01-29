@@ -6,6 +6,7 @@ import { faTimes, faPlusCircle, faTag, faAlignLeft, faCalendarAlt, faCalendarChe
 import { IBatch } from '../../core/models/Batch';
 import { BatchService } from '../../core/services/batches';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { formatDate } from '../../shared/utils/utilityFunctions';
 
 @Component({
   selector: 'app-addeditbatch',
@@ -15,7 +16,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
   styleUrl: './addeditbatch.css',
 })
 export class Addeditbatch implements OnInit {
-  private readonly fb = inject(FormBuilder);
+  fb = inject(FormBuilder);
   batchService = inject(BatchService);
 
   constructor(@Optional() public dialogRef: MatDialogRef<Addeditbatch>, @Inject(MAT_DIALOG_DATA) public dialogData: IBatch) { }
@@ -48,16 +49,14 @@ export class Addeditbatch implements OnInit {
       this.batchService.getBatchById(this.dialogData.batchId, (data: IBatch) => {
       this.batchForm.patchValue({
         ...data,
-        startDate: this.formatDate(data.startDate),
-        endDate: this.formatDate(data.endDate),
+        startDate: formatDate(data.startDate),
+        endDate: formatDate(data.endDate),
       });
     });
     }
   }
 
-  formatDate(date: string | Date): string {
-    return new Date(date).toLocaleDateString('sv-SE', { timeZone: 'Asia/Kolkata' });
-  }
+  
 
   submitForm() {
     if (this.batchForm.valid) {

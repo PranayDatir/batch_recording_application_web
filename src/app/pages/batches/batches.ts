@@ -1,17 +1,18 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BatchService } from '../../core/services/batches';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEdit, faTrashAlt, faPlus, faEye, faHashtag, faAlignLeft, faCalendar, faCog, faTag, faToggleOn, faCalendarAlt, faLayerGroup, faSearch, faTimesCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { DatePipe, NgClass } from '@angular/common';
 import { IBatch } from '../../core/models/Batch';
 import { StatusPipe } from "../../shared/pipe/status-pipe";
-import { MatDialog } from '@angular/material/dialog';
 import { Addeditbatch } from '../addeditbatch/addeditbatch';
 import { Deletebatchconfirmation } from '../deletebatchconfirmation/deletebatchconfirmation';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-batches',
-  imports: [FontAwesomeModule, DatePipe, StatusPipe, NgClass],
+  imports: [FontAwesomeModule, DatePipe, StatusPipe, NgClass, MatDialogModule],
   templateUrl: './batches.html',
   styleUrl: './batches.css',
 })
@@ -33,6 +34,7 @@ export class Batches implements OnInit {
   faCheckCircle = faCheckCircle;
 
   batcheService = inject(BatchService);
+  router = inject(Router);
 
   ngOnInit() {
     this.batcheService.getBatches()
@@ -62,8 +64,8 @@ export class Batches implements OnInit {
       exitAnimationDuration: '100ms'
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      this.batcheService.getBatches();
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      result ? this.batcheService.getBatches() : null;
     });
   }
 
@@ -76,8 +78,12 @@ export class Batches implements OnInit {
       exitAnimationDuration: '100ms'
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      result ? this.batcheService.getBatches() : null;;
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      result ? this.batcheService.getBatches() : null;
     });
+  }
+
+  viewSessions(batch: IBatch) {
+    this.router.navigate(['layout/batchSessions/recording',batch.batchId]);
   }
 }

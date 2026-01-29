@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CandidateService } from '../../core/services/candidate-service';
 import { faBan, faCalendar, faCheck, faCheckCircle, faCog, faEdit, faEnvelope, faEye, faHashtag, faPhone, faPlus, faSearch, faTag, faTimesCircle, faToggleOn, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
@@ -15,7 +15,7 @@ import { Deletecandidate } from '../deletecandidate/deletecandidate';
   templateUrl: './candidate.html',
   styleUrl: './candidate.css',
 })
-export class Candidate implements OnInit {
+export class Candidate implements OnInit, OnDestroy {
 
   faHashtag = faHashtag;
   faUser = faUser;
@@ -39,6 +39,9 @@ export class Candidate implements OnInit {
     this.candidateService.getCandidates();
   }
   constructor(private dialog: MatDialog) { }
+  ngOnDestroy(): void {
+    
+  }
   addEditCandidate(candidate: ICandidate | undefined) {
     const dialogRef = this.dialog.open(Addeditcandidate, {
       data: candidate ? candidate : undefined,

@@ -46,6 +46,7 @@ export class BatchEnrollmentService {
   
   
   enrollmentList = signal<IBatchEnrollmentResponse[]>([]);
+  enrollmentListByCandidateID = signal<IBatchEnrollmentResponse[]>([]);
 
   getEnrollments() {
     const http = this.http.get<IApiResponse<IBatchEnrollmentResponse[]>>(ApiRoutes.ALL_ENROLLMENTS).subscribe({
@@ -68,6 +69,22 @@ export class BatchEnrollmentService {
         next: (res: IApiResponse<IBatchEnrollment>) => {
           if (res.result) {
             cb(res.data!);
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => {
+          console.log('complete');
+        },
+      })
+    }
+
+    getEnrollmentByCandidateId(candidateId: number) {
+      this.http.get<IApiResponse<IBatchEnrollmentResponse[]>>(`${ApiRoutes.GET_ENROLLMENT_BY_CANDIDATE_ID}${candidateId}`).subscribe({
+        next: (res: IApiResponse<IBatchEnrollmentResponse[]>) => {
+          if (res.result) {
+            this.enrollmentListByCandidateID.set(res.data!);
           }
         },
         error: (err) => {
