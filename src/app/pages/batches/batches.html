@@ -16,7 +16,7 @@
           class="w-64 rounded-lg border border-slate-300 bg-white pl-10 pr-4 py-2.5 text-sm text-slate-700 shadow-sm transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none" />
       </div> -->
 
-      <select (change)="batcheService.filterBatches($event)"
+      <select (change)="onFilterChange($event)"
         class="rounded-lg border w-50 border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none">
         <option value="">All Status</option>
         <option value="true">Active</option>
@@ -55,12 +55,12 @@
       </thead>
 
       <tbody>
-        @for (item of batcheService.batchData(); track $index) {
+        @for (item of paginatedBatches(); track $index) {
         <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
 
           <!-- Index -->
           <td class="px-6 py-4 text-sm font-medium text-slate-500">
-            #{{ $index + 1 }}
+            #{{ (currentPage() - 1) * pageSize() + $index + 1 }}
           </td>
 
           <!-- Batch Info -->
@@ -121,4 +121,9 @@
       </tbody>
     </table>
   </div>
+  <!-- <div class="mt-4 flex justify-end">
+    <app-pagination [totalItems]="batcheService.batchData().length" [pageSize]="pageSize()"
+      [currentPage]="currentPage()" (pageChange)="onPageChange($event)">
+    </app-pagination>
+  </div> -->
 </div>

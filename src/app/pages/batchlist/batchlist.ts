@@ -16,10 +16,10 @@ export class Batchlist {
   batchEnrollmentService = inject(BatchEnrollmentService);
 
   ngOnInit() {
-    this.batchService.getBatches();
-    this.batchEnrollmentService.getEnrollmentByCandidateId(this.authUser.user.candidateId);
-    // this.batchId ? this.sessionService.getSessionsByBatch(this.batchId) : this.sessionService.getSessions();
+    if(this.authUser.user.role === 'Super Admin'){
+      this.batchService.getBatches();
+    } else {
+      this.batchEnrollmentService.getEnrollmentByCandidateId(this.authUser.user.candidateId);
+    }
   }
-
-
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BatchService } from '../../core/services/batches';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -9,10 +9,11 @@ import { StatusPipe } from "../../shared/pipe/status-pipe";
 import { Addeditbatch } from '../addeditbatch/addeditbatch';
 import { Deletebatchconfirmation } from '../deletebatchconfirmation/deletebatchconfirmation';
 import { Router } from '@angular/router';
+import { PaginationComponent } from '../../shared/components/pagination/pagination';
 
 @Component({
   selector: 'app-batches',
-  imports: [FontAwesomeModule, DatePipe, StatusPipe, NgClass, MatDialogModule],
+  imports: [FontAwesomeModule, DatePipe, StatusPipe, NgClass, MatDialogModule, PaginationComponent],
   templateUrl: './batches.html',
   styleUrl: './batches.css',
 })
@@ -84,6 +85,24 @@ export class Batches implements OnInit {
   }
 
   viewSessions(batch: IBatch) {
-    this.router.navigate(['layout/batchSessions/recording',batch.batchId]);
+    this.router.navigate(['layout/batchSessions/recording', batch.batchId]);
+  }
+
+  currentPage = signal(1);
+  pageSize = signal(5);
+
+  paginatedBatches = computed(() => {
+    const startIndex = (this.currentPage() - 1) * this.pageSize();
+    const endIndex = startIndex + this.pageSize();
+    return this.batcheService.batchData().slice(startIndex, endIndex);
+  });
+
+  onPageChange(page: number) {
+    this.currentPage.set(page);
+  }
+
+  onFilterChange(event: any) {
+    this.batcheService.filterBatches(event);
+    this.currentPage.set(1);
   }
 }

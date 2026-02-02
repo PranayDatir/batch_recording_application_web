@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, computed } from '@angular/core';
 import { CandidateService } from '../../core/services/candidate-service';
 import { faBan, faCalendar, faCheck, faCheckCircle, faCog, faEdit, faEnvelope, faEye, faHashtag, faPhone, faPlus, faSearch, faTag, faTimesCircle, faToggleOn, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
@@ -8,14 +8,15 @@ import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Addeditcandidate } from '../addeditcandidate/addeditcandidate';
 import { Deletecandidate } from '../deletecandidate/deletecandidate';
+import { PaginationComponent } from "../../shared/components/pagination/pagination";
 
 @Component({
   selector: 'app-candidate',
-  imports: [FontAwesomeModule, StatusPipe, CommonModule],
+  imports: [FontAwesomeModule, StatusPipe, CommonModule, PaginationComponent],
   templateUrl: './candidate.html',
   styleUrl: './candidate.css',
 })
-export class Candidate implements OnInit, OnDestroy {
+export class Candidate implements OnInit {
 
   faHashtag = faHashtag;
   faUser = faUser;
@@ -39,9 +40,7 @@ export class Candidate implements OnInit, OnDestroy {
     this.candidateService.getCandidates();
   }
   constructor(private dialog: MatDialog) { }
-  ngOnDestroy(): void {
-    
-  }
+
   addEditCandidate(candidate: ICandidate | undefined) {
     const dialogRef = this.dialog.open(Addeditcandidate, {
       data: candidate ? candidate : undefined,
@@ -67,6 +66,19 @@ export class Candidate implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       result ? this.candidateService.getCandidates() : null;
     });
+  }
+
+  currentPage = signal(1);
+  pageSize = signal(5);
+
+  paginatedCandidateList = computed(() => {
+    const startIndex = (this.currentPage() - 1) * this.pageSize();
+    const endIndex = startIndex + this.pageSize();
+    return this.candidateService.candidatesList().slice(startIndex, endIndex);
+  });
+
+  onPageChange(page: number) {
+    this.currentPage.set(page);
   }
 
 }

@@ -2,7 +2,7 @@
 
     <aside class="w-64 bg-[#0A2540] text-white hidden md:flex flex-col shadow-xl">
 
-        <div class="flex items-center bg-gray-200 p-2 m-6 rounded-full  gap-2">
+        <div class="flex items-center bg-gray-200 p-2 m-3 rounded-full  gap-2">
             <img [src]="logoUrl" alt="Learning Partner's" class="h-10 w-10 mix-blend-multiply">
             <b class="text-[#003B73]">Learning <br> Partner's</b>
         </div>
@@ -27,14 +27,14 @@
             </a>
             }
             <a routerLink="batchSessions" routerLinkActive="bg-[#356fa6] text-[#003B73]"
-                class="flex items-center gap-3 px-4 py-3 text-white hover:bg-[#356fa6] rounded-xl font-medium transition-all">
+                class="flex items-center gap-3 px-4 py-3 text-white hover:bg-[#356fa6]  rounded-xl font-medium transition-all">
                 <fa-icon [icon]="faCalendarDay"></fa-icon>Batch Sessions
             </a>
         </nav>
 
         <div class="px-4 py-5 border-t border-slate-700">
             <button (click)="logout()"
-                class="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-red-400 hover:bg-red-500 hover:text-white transition-all font-semibold">
+                class="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-red-400 hover:bg-red-500 hover:text-white hover:cursor-pointer transition-all font-semibold">
                 <fa-icon [icon]="faSignOutAlt"></fa-icon>
                 Logout
             </button>
@@ -45,49 +45,41 @@
 
         <header class="bg-white h-20 flex items-center px-8 border-b border-slate-200/60 z-10 shadow-sm">
 
-    <!-- Left Spacer (keeps search perfectly centered) -->
-    <div class="flex-1"></div>
+            <!-- Left Spacer (keeps search perfectly centered) -->
+            <div class="flex-1"></div>
 
-    <!-- Center Search Box -->
-    <div class="flex-[2] flex justify-center">
-        <div class="relative w-full max-w-xl">
-            <input
-                type="text"
-                placeholder="Search batches, sessions, candidates..."
-                class="w-full pl-12 pr-4 py-2 rounded-full border border-slate-200
+            <!-- Center Search Box -->
+            <div class="flex-[2] flex justify-center">
+                <div class="relative w-full max-w-xl">
+                    <input type="text" placeholder="Search batches, sessions, candidates..." class="w-full pl-12 pr-4 py-2 rounded-full border border-slate-200
                        focus:outline-none focus:ring-2 focus:ring-[#003B73]/30
-                       focus:border-[#003B73] text-sm shadow-sm transition-all"
-            />
+                       focus:border-[#003B73] text-sm shadow-sm transition-all" />
 
-            <!-- Search Icon -->
-            <svg class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"
-                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z"/>
-            </svg>
-        </div>
-    </div>
-
-    <!-- Right Profile Section -->
-    <div class="flex-1 flex justify-end items-center gap-6">
-        <div class="flex items-center gap-3 cursor-pointer group">
-            <div class="text-right hidden sm:block">
-                <p class="text-sm font-bold text-slate-700 group-hover:text-[#003B73] transition-colors">
-                    {{ authUser.user.fullName }}
-                </p>
-                <p class="text-xs text-slate-400">{{ authUser.user.role }}</p>
-            </div>
-            <div (click)="openProfile()"
-                 class="w-11 h-11 rounded-full bg-[#003B73] p-1 shadow-md group-hover:scale-105 transition-transform">
-                <div
-                    class="w-full h-full rounded-full bg-white flex items-center justify-center text-[#003B73] font-bold text-2xl">
-                    {{ authUser.user.fullName[0] | uppercase }}
+                    <!-- Search Icon -->
+                    <fa-icon [icon]="faSearch" class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></fa-icon> 
                 </div>
             </div>
-        </div>
-    </div>
 
-</header>
+            <!-- Right Profile Section -->
+            <div class="flex-1 flex justify-end items-center gap-6">
+                <div class="flex items-center gap-3 group">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-slate-700 group-hover:text-[#003B73] transition-colors">
+                            {{ authUser.user.fullName }}
+                        </p>
+                        <p class="text-xs text-slate-400">{{ authUser.user.role }}</p>
+                    </div>
+                    <div (click)="openProfile()"
+                        class="w-11 h-11 rounded-full bg-[#003B73] p-1 shadow-md group-hover:scale-105 transition-transform cursor-pointer">
+                        <div
+                            class="w-full h-full rounded-full bg-white flex items-center justify-center text-[#003B73] font-bold text-2xl">
+                            {{ authUser.user.fullName[0] | uppercase }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </header>
 
 
         <!-- Main Content -->

@@ -8,14 +8,6 @@
         </div>
 
         <div class="flex items-center gap-3">
-
-            <!-- <div class="relative">
-                <fa-icon [icon]="faSearch" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
-                </fa-icon>
-                <input type="text" placeholder="Search candidates..."
-                    class="w-64 rounded-lg border border-slate-300 bg-white pl-10 pr-4 py-2.5 text-sm text-slate-700 shadow-sm transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none" />
-            </div> -->
-
             <select
                 class="rounded-lg border w-50 border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none">
                 <option value="">All Status</option>
@@ -56,9 +48,10 @@
                 </tr>
             </thead>
             <tbody>
-                @for (item of candidateService.candidatesList(); track $index) {
+                @for (item of paginatedCandidateList(); track $index) {
                 <tr class="table-row">
-                    <td class="py-4 px-7 text-slate-500 font-medium">#{{$index + 1}}</td>
+                    <td class="py-4 px-7 text-slate-500 font-medium">#{{ (currentPage() - 1) * pageSize() + $index + 1
+                        }}</td>
                     <td class="py-4 px-6 text-slate-800">
                         <div class="font-semibold text-slate-800">{{item.fullName}}</div>
                     </td>
@@ -104,5 +97,10 @@
                 }
             </tbody>
         </table>
+    </div>
+    <div class=" flex justify-center">
+        <pagination [totalItems]="candidateService.candidatesList().length" [pageSize]="pageSize()"
+            [currentPage]="currentPage()" (pageChange)="onPageChange($event)">
+        </pagination>
     </div>
 </div>
