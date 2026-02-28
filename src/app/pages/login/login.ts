@@ -7,7 +7,7 @@ import { ICandidate } from '../../core/models/Candidate';
 import { Router } from '@angular/router';
 import { Loadingbutton } from '../../shared/components/loadingbutton/loadingbutton';
 import { CommonModule } from '@angular/common';
-import { faEnvelope, faGraduationCap, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faEye, faEyeSlash, faGraduationCap, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { Notify } from '../../core/services/notify';
 
@@ -25,6 +25,14 @@ export class Login {
   faGraduationCap = faGraduationCap;
   faLock = faLock;
   faEnvelope = faEnvelope;
+  showPassword: boolean = false;
+  faEye = faEye;
+  faEyeSlash = faEyeSlash;
+
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
   logoUrl: string = '/assets/learning_partner_logo.jpg'
 
   loginObj: IBatchLoginRequestModel = {
