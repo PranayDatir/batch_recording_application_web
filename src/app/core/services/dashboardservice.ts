@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Http } from './http';
 import { ApiRoutes } from '../constants/ApiRoutes';
 import { IAdminDashboard, IApiResponse, IBatchCandidateStats, ICandidateDashboard } from '../Interfaces/ApiResponse';
+import { Notify } from './notify';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,7 @@ import { IAdminDashboard, IApiResponse, IBatchCandidateStats, ICandidateDashboar
 export class Dashboardservice {
 
   http = inject(Http);
+  notify = inject(Notify);
 
   candidateDashboard = signal<ICandidateDashboard | null>(null);
   adminDashboard = signal<IAdminDashboard | null>(null);
@@ -18,6 +20,7 @@ export class Dashboardservice {
     this.http.get<IApiResponse<ICandidateDashboard>>(ApiRoutes.CANDIDATE_DASHBOARD + candidateId).subscribe({
       next: (response: IApiResponse<ICandidateDashboard>) => {
         this.candidateDashboard.set(response.data!);
+        this.notify.show('success', response.message);
       },
       error: (error) => {
         console.error('Error fetching candidate dashboard data:', error);
@@ -29,9 +32,11 @@ export class Dashboardservice {
     this.http.get<IApiResponse<IAdminDashboard>>(ApiRoutes.ADMIN_DASHBOARD).subscribe({
       next: (response: IApiResponse<IAdminDashboard>) => {
         this.adminDashboard.set(response.data!);
+        this.notify.show('success', response.message);
       },
       error: (error) => {
         console.error('Error fetching admin dashboard data:', error);
+        this.notify.show('error', 'Internal Server Error');
       }
     });
   }

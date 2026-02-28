@@ -9,6 +9,7 @@ import { Loadingbutton } from '../../shared/components/loadingbutton/loadingbutt
 import { CommonModule } from '@angular/common';
 import { faEnvelope, faGraduationCap, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { Notify } from '../../core/services/notify';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 export class Login {
   auth = inject(Auth);
   router = inject(Router);
+  notify = inject(Notify);
 
   faGraduationCap = faGraduationCap;
   faLock = faLock;
@@ -39,13 +41,15 @@ export class Login {
           localStorage.setItem('candidate', JSON.stringify(res.data));
           localStorage.setItem('token', res.token);
           this.router.navigate(['/layout']);
+          this.notify.show('success', res.message);
         } else {
           this.isSubmitting = false;
+          this.notify.show('error', res.message);
         }
       },
       error: (err) => {
         this.isSubmitting = false;
-        console.error('Login failed', err);
+        this.notify.show('error', err.error.message);
       },
       complete: () => {
       }

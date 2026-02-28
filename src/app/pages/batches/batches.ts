@@ -9,11 +9,10 @@ import { StatusPipe } from "../../shared/pipe/status-pipe";
 import { Addeditbatch } from '../addeditbatch/addeditbatch';
 import { Deletebatchconfirmation } from '../deletebatchconfirmation/deletebatchconfirmation';
 import { Router } from '@angular/router';
-import { PaginationComponent } from '../../shared/components/pagination/pagination';
 
 @Component({
   selector: 'app-batches',
-  imports: [FontAwesomeModule, DatePipe, StatusPipe, NgClass, MatDialogModule, PaginationComponent],
+  imports: [FontAwesomeModule, DatePipe, StatusPipe, NgClass, MatDialogModule],
   templateUrl: './batches.html',
   styleUrl: './batches.css',
 })
