@@ -16,6 +16,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "baseHref": "/batch_recording_application_web/",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "polyfills": [
