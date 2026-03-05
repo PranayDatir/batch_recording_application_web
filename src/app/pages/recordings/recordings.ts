@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Sessionservice } from '../../core/services/sessionservice';
 import { CommonModule } from '@angular/common';
@@ -11,10 +11,11 @@ import { Auth } from '../../core/services/auth';
 import { Authuser } from '../../core/services/authuser';
 import { Addeditsession } from '../addeditsession/addeditsession';
 import { Deletesession } from '../deletesession/deletesession';
+import { PaginationComponent } from "../../shared/components/pagination/pagination";
 
 @Component({
   selector: 'app-recordings',
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, PaginationComponent],
   templateUrl: './recordings.html',
   styleUrl: './recordings.css',
 })
@@ -38,6 +39,23 @@ export class Recordings implements OnInit {
     const navigation = history.state;
     this.batch = navigation?.batch;
     this.sessionService.getSessionsByBatch(this.batchId);
+
+    this.sessionService.searchTerm$
+        .subscribe(term => {
+          const allBatches = this.sessionService.allSessionsListByBatch();
+          console.log(term);
+          if (!term.trim()) {
+            this.sessionService.sessionsListByBatch.set(allBatches);
+            return;
+          }
+          const filtered = allBatches.filter(recording =>
+            recording.topicName.toLowerCase().includes(term.toLowerCase()) || 
+            recording.topicDescription?.toLowerCase().includes(term.toLowerCase())
+          );
+  
+          this.sessionService.sessionsListByBatch.set(filtered);
+          this.currentPage.set(1);
+        });
   }
   getYoutubeThumbnail(url: string): string {
     const regExp =
@@ -84,4 +102,18 @@ export class Recordings implements OnInit {
         result ? this.sessionService.getSessions() : null;
       });
     }
+
+  currentPage = signal(1);
+  pageSize = signal(8);
+
+  paginatedSessions = computed(() => {
+    const startIndex = (this.currentPage() - 1) * this.pageSize();
+    const endIndex = startIndex + this.pageSize();
+    return this.sessionService.sessionsListByBatch().slice(startIndex, endIndex);
+  });
+
+  onPageChange(page: number) {
+    this.currentPage.set(page);
+  }
+
 }

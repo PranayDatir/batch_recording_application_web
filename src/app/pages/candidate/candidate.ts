@@ -9,10 +9,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { Addeditcandidate } from '../addeditcandidate/addeditcandidate';
 import { Deletecandidate } from '../deletecandidate/deletecandidate';
 import { PaginationComponent } from "../../shared/components/pagination/pagination";
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-candidate',
-  imports: [FontAwesomeModule, StatusPipe, CommonModule, PaginationComponent],
+  imports: [FontAwesomeModule, StatusPipe, CommonModule, PaginationComponent, ReactiveFormsModule],
   templateUrl: './candidate.html',
   styleUrl: './candidate.css',
 })
@@ -35,9 +37,17 @@ export class Candidate implements OnInit {
   faTag = faTag;
   faCalendar = faCalendar;
   candidateService = inject(CandidateService);
+  searchControl = new FormControl('');
 
   ngOnInit() {
     this.candidateService.getCandidates();
+
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe((value) =>{
+       this.applySearch(value ?? '');
+      });
   }
   constructor(private dialog: MatDialog) { }
 
@@ -79,6 +89,24 @@ export class Candidate implements OnInit {
 
   onPageChange(page: number) {
     this.currentPage.set(page);
+  }
+
+  applySearch(value: string) {
+    const allCandidates = this.candidateService.allCandidatesList();
+
+    if (!value.trim()) {
+      this.candidateService.candidatesList.set(allCandidates);
+      return;
+    }
+
+    const filtered = allCandidates.filter(candidate =>
+      candidate.fullName.toLowerCase().includes(value.toLowerCase()) ||
+      candidate.email?.toLowerCase().includes(value.toLowerCase()) || 
+      candidate.mobileNumber?.toLowerCase().includes(value.toLowerCase())
+    );
+
+    this.candidateService.candidatesList.set(filtered);
+    this.currentPage.set(1);
   }
 
 }

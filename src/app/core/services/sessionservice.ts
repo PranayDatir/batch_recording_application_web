@@ -4,6 +4,7 @@ import { IApiResponse } from '../Interfaces/ApiResponse';
 import { ICandidate } from '../models/Candidate';
 import { Http } from './http';
 import { IBatchSession, IBatchSessionResponse } from '../models/BatchSession';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class Sessionservice {
   http = inject(Http);
 
   sessionsList = signal<IBatchSessionResponse[]>([]);
+  allSessionsListByBatch = signal<IBatchSession[]>([]);
   sessionsListByBatch = signal<IBatchSession[]>([]);
 
   getSessions() {
@@ -52,6 +54,7 @@ export class Sessionservice {
       next: (res: IApiResponse<IBatchSession[]>) => {
         if (res.result) {
           this.sessionsListByBatch.set(res.data!);
+          this.allSessionsListByBatch.set(res.data!);
         }
       },
       error: (err) => {
@@ -107,5 +110,14 @@ export class Sessionservice {
         console.log('complete');
       },
     })
+  }
+
+
+  private searchTermSubject = new BehaviorSubject<string>('');
+
+  searchTerm$ = this.searchTermSubject.asObservable();
+
+  setSearchTerm(term: string) {
+    this.searchTermSubject.next(term);
   }
 }

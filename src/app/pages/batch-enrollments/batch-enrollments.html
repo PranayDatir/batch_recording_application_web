@@ -7,15 +7,15 @@
         Manage and organize learning batches
       </p>
     </div>
+    <div class="relative">
+      <fa-icon [icon]="faSearch" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+      </fa-icon>
+      <input type="text" [formControl]="searchControl" placeholder="Search"
+        class="w-80 rounded-lg border border-slate-300 bg-white pl-10 pr-4 py-2.5 text-sm text-slate-700 shadow-sm transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none" />
+    </div>
 
     <div class="flex items-center gap-3">
 
-      <!-- <div class="relative">
-        <fa-icon [icon]="faSearch" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
-        </fa-icon>
-        <input type="text" placeholder="Search batches..."
-          class="w-64 rounded-lg border border-slate-300 bg-white pl-10 pr-4 py-2.5 text-sm text-slate-700 shadow-sm transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none" />
-      </div> -->
 
       <select
         class="rounded-lg border w-50 border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none">
@@ -59,11 +59,12 @@
       </thead>
 
       <tbody>
-        @for (item of enrollService.enrollmentList(); track $index) {
+        @for (item of paginatedBatchEnroll(); track $index) {
         <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
 
           <td class="px-6 py-4 text-sm font-medium text-slate-500">
-            #{{ $index + 1 }}
+            #{{ (currentPage() - 1) * pageSize() + $index + 1
+            }}
           </td>
 
           <td class="px-6 py-4">
@@ -112,5 +113,11 @@
         }
       </tbody>
     </table>
+  </div>
+  <div class="mt-4 flex justify-center">
+    @if(pageSize() < enrollService.enrollmentList().length){ <pagination
+      [totalItems]="enrollService.enrollmentList().length" [pageSize]="pageSize()" [currentPage]="currentPage()"
+      (pageChange)="onPageChange($event)">
+      </pagination>}
   </div>
 </div>
