@@ -46,13 +46,17 @@ export class BatchEnrollmentService {
   
   
   enrollmentList = signal<IBatchEnrollmentResponse[]>([]);
+  allEnrollmentList = signal<IBatchEnrollmentResponse[]>([]);
+
   enrollmentListByCandidateID = signal<IBatchEnrollmentResponse[]>([]);
+  allEnrollmentListByCandidateID = signal<IBatchEnrollmentResponse[]>([]);
 
   getEnrollments() {
     const http = this.http.get<IApiResponse<IBatchEnrollmentResponse[]>>(ApiRoutes.ALL_ENROLLMENTS).subscribe({
       next: (res: IApiResponse<IBatchEnrollmentResponse[]>) => {
         if (res.result) {
           this.enrollmentList.set(res.data!);
+          this.allEnrollmentList.set(res.data!);
         }
       },
       error: (err) => {
@@ -85,6 +89,7 @@ export class BatchEnrollmentService {
         next: (res: IApiResponse<IBatchEnrollmentResponse[]>) => {
           if (res.result) {
             this.enrollmentListByCandidateID.set(res.data!);
+            this.allEnrollmentListByCandidateID.set(res.data!);
           }
         },
         error: (err) => {

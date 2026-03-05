@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Sessionservice } from '../../core/services/sessionservice';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { faEdit, faTrashAlt, faPlus, faEye, faHashtag, faTag, faAlignLeft, faCalendar, faToggleOn, faCog, faCalendarAlt, faLayerGroup, faSearch, faTimesCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -8,10 +8,12 @@ import { Addeditsession } from '../addeditsession/addeditsession';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { BatchService } from '../../core/services/batches';
 import { Authuser } from '../../core/services/authuser';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-sessions',
-  imports: [FontAwesomeModule, MatDialogModule,  RouterOutlet],
+  imports: [FontAwesomeModule, MatDialogModule, RouterOutlet, ReactiveFormsModule],
   templateUrl: './sessions.html',
   styleUrl: './sessions.css',
 })
@@ -34,14 +36,25 @@ export class Sessions {
   sessionService = inject(Sessionservice);
   batchService = inject(BatchService);
   activeRoute = inject(ActivatedRoute);
-  
+
   constructor(public dialog: MatDialog) { }
-  
+
   batchId = this.activeRoute.snapshot.params['batchId'];
+  route = this.activeRoute.snapshot.routeConfig;
   authUser = inject(Authuser);
+  searchControl = new FormControl('');
+  private destroySearch$ = new Subject<void>();
+  searchTerm$ = new BehaviorSubject<string>('');
   ngOnInit() {
-    // this.batchService.getBatches();
-    // this.batchId ? this.sessionService.getSessionsByBatch(this.batchId) : this.sessionService.getSessions();
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this.destroySearch$)
+      )
+      .subscribe((searchTerm) => {
+        this.sessionService.setSearchTerm(searchTerm ?? '');
+      });
   }
 
   addEditSession(session?: IBatchSession) {
@@ -58,6 +71,5 @@ export class Sessions {
     });
 
   }
-
 
 }

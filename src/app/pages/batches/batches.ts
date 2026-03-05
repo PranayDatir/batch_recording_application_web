@@ -9,10 +9,13 @@ import { StatusPipe } from "../../shared/pipe/status-pipe";
 import { Addeditbatch } from '../addeditbatch/addeditbatch';
 import { Deletebatchconfirmation } from '../deletebatchconfirmation/deletebatchconfirmation';
 import { Router } from '@angular/router';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { PaginationComponent } from '../../shared/components/pagination/pagination';
 
 @Component({
   selector: 'app-batches',
-  imports: [FontAwesomeModule, DatePipe, StatusPipe, NgClass, MatDialogModule],
+  imports: [FontAwesomeModule, DatePipe, StatusPipe, NgClass, MatDialogModule, ReactiveFormsModule, PaginationComponent],
   templateUrl: './batches.html',
   styleUrl: './batches.css',
 })
@@ -35,14 +38,24 @@ export class Batches implements OnInit {
 
   batcheService = inject(BatchService);
   router = inject(Router);
+  searchControl = new FormControl('');
+  private destroyBatchSearch$ = new Subject<void>();
 
   ngOnInit() {
-    this.batcheService.getBatches()
+    this.batcheService.getBatches();
+
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this.destroyBatchSearch$)
+      )
+      .subscribe((searchTerm) => {
+        this.applySearch(searchTerm ?? '');
+      });
   }
 
-  constructor(private dialog: MatDialog) {
-
-  }
+  constructor(private dialog: MatDialog) {}
 
   batch: IBatch = {
     batchId: 0,
@@ -102,6 +115,23 @@ export class Batches implements OnInit {
 
   onFilterChange(event: any) {
     this.batcheService.filterBatches(event);
+    this.currentPage.set(1);
+  }
+
+  applySearch(searchTerm: string) {
+    const allBatches = this.batcheService.allBatchData();
+
+    if (!searchTerm.trim()) {
+     this.batcheService.batchData.set(allBatches);
+      return;
+    }
+
+    const filtered = allBatches.filter(batch =>
+      batch.batchName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      batch.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    this.batcheService.batchData.set(filtered);
     this.currentPage.set(1);
   }
 }

@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-loadingbutton',
   imports: [],
-  template: `<button [type]="type" [disabled]="loading || disabled" class="w-full flex justify-center items-center bg-gradient-to-r bg-[#003B73] text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-[1.02] font-bold py-3 rounded-full mt-4 shadow-lg hover:scale-[1.02] active:scale-95 transition-transform">
+  template: `<button [type]="type" [disabled]="loading || disabled" class="w-full flex justify-center items-center bg-gradient-to-r bg-[#003B73] text-white disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-[1.02] font-bold py-3 rounded-full mt-4 shadow-lg hover:scale-[1.02] active:scale-95 transition-transform cursor-pointer">
 
         <!-- Loader -->
         @if(loading){

@@ -1,6 +1,6 @@
+@if(authUser.user.role === 'Super Admin'){
 <div class="grid grid-cols-4 gap-5">
-  @if(authUser.user.role === 'Super Admin'){
-  @for (item of batchService.batchData(); track $index) {
+  @for (item of paginatedBatches(); track $index) {
   <div [routerLink]="`/layout/batchSessions/recording/${item.batchId}`" class="inline-flex items-center justify-center h-16
                 px-4 py-1.5
                 rounded-md
@@ -11,8 +11,15 @@
     </span>
   </div>
   }
-  }@else if(authUser.user.role === 'Candidate') {
-  @for (item of batchEnrollmentService.enrollmentListByCandidateID(); track $index) {
+</div>
+  <div class="mt-6 flex justify-center">
+    @if(pageSize() < batchService.batchData().length){ <pagination [totalItems]="batchService.batchData().length"
+      [pageSize]="pageSize()" [currentPage]="currentPage()" (pageChange)="onPageChange($event)">
+      </pagination>}
+  </div>
+}@else if(authUser.user.role === 'Candidate') {
+<div class="grid grid-cols-4 gap-5">
+  @for (item of paginatedCandidateBatches(); track $index) {
   <div [routerLink]="`/layout/batchSessions/recording/${item.batchId}`" [state]="{ batch: item }" class="inline-flex items-center justify-center h-16
                 px-4 py-1.5
                 rounded-md
@@ -23,5 +30,12 @@
     </span>
   </div>
   }
-  }
 </div>
+<div class="mt-6 flex justify-center">
+    @if(candidatePageSize() < batchEnrollmentService.enrollmentListByCandidateID().length){ 
+      <pagination [totalItems]="batchEnrollmentService.enrollmentListByCandidateID().length"
+      [pageSize]="candidatePageSize()" [currentPage]="currentCandidatePage()" (pageChange)="onCandidatePageChange($event)">
+      </pagination>
+    }
+  </div>
+}

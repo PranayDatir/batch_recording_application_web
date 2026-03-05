@@ -23,7 +23,6 @@ export class Layout {
   faSignOutAlt = faSignOutAlt;
   faCalendarDay = faCalendarDay;
   faHome = faHome;
-
   faSearch = faSearch;
   faBell = faBell;
 
