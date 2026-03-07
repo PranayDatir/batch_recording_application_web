@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { faEnvelope, faEye, faEyeSlash, faGraduationCap, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { Notify } from '../../core/services/notify';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +30,7 @@ export class Login {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
 
+  AppVer = environment.version;
 
   togglePassword() {
     this.showPassword = !this.showPassword;

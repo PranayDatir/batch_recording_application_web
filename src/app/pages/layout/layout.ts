@@ -6,6 +6,7 @@ import { Authuser } from '../../core/services/authuser';
 import { MatDialog } from '@angular/material/dialog';
 import { Profile } from '../profile/profile';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-layout',
@@ -35,6 +36,7 @@ export class Layout {
   }
 
   authUser = inject(Authuser);
+  AppVer = environment.version;
 
   ngOnInit() {
     console.log('authUser.user ---> ', this.authUser.user);
