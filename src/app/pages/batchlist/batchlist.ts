@@ -32,11 +32,11 @@ export class Batchlist {
           const filtered = allBatches.filter(batch =>
             batch.batchName.toLowerCase().includes(term.toLowerCase())
           );
-  
+
           this.batchService.batchData.set(filtered);
           this.currentPage.set(1);
         });
-    } else if (this.authUser.user.role === 'Candidate'){
+    } else if (this.authUser.user.role === 'Candidate') {
       this.batchEnrollmentService.getEnrollmentByCandidateId(this.authUser.user.candidateId);
       this.sessionService.searchTerm$
         .subscribe(term => {
@@ -49,7 +49,7 @@ export class Batchlist {
           const filtered = allBatches.filter(batch =>
             batch.batchName.toLowerCase().includes(term.toLowerCase())
           );
-  
+
           this.batchEnrollmentService.enrollmentListByCandidateID.set(filtered);
           this.currentPage.set(1);
         });
@@ -71,7 +71,7 @@ export class Batchlist {
   }
 
   currentCandidatePage = signal(1);
-  candidatePageSize = signal(1);
+  candidatePageSize = signal(8);
 
   paginatedCandidateBatches = computed(() => {
     const startIndex = (this.currentCandidatePage() - 1) * this.candidatePageSize();
